@@ -1,0 +1,79 @@
+{
+    // === clangd 语言服务器配置 ===
+    "clangd.path": "clangd",
+    "clangd.arguments": [
+        "--log=verbose",
+        "--pretty",
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--header-insertion=iwyu",
+        "--header-insertion-decorators",
+        "--pch-storage=memory",
+        "--enable-config",
+        "--query-driver=**"
+    ],
+    "clangd.detectExtensionConflicts": true,
+    "clangd.checkUpdates": true,
+    
+    // === 禁用 C/C++ IntelliSense（避免与 clangd 冲突）===
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.autocomplete": "disabled",
+    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.configurationWarnings": "disabled",
+    
+    // === 编辑器配置 ===
+    "editor.semanticHighlighting.enabled": true,
+    "editor.suggest.insertMode": "replace",
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.acceptSuggestionOnEnter": "on",
+    
+    // === C++ 特定配置 ===
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    
+    // === 文件关联 ===
+    "files.associations": {
+        "*.BUILD": "starlark",
+        "BUILD": "starlark",
+        "BUILD.bazel": "starlark",
+        "WORKSPACE": "starlark",
+        "WORKSPACE.bazel": "starlark",
+        "*.bzl": "starlark",
+        "MODULE.bazel": "starlark"
+    },
+    
+    // === Bazel 相关配置 ===
+    "bazel.buildifierExecutable": "buildifier",
+    "bazel.enableCodeLens": true,
+    
+    // === 终端配置 ===
+    "terminal.integrated.env.osx": {
+        "BAZEL_COMPLETION": "1"
+    },
+    
+    // === 搜索排除 ===
+    "search.exclude": {
+        "**/bazel-*": true,
+        "**/external": true,
+        "**/.cache": true,
+        "**/compile_commands.json": true
+    },
+    
+    // === 文件监控排除 ===
+    "files.watcherExclude": {
+        "**/bazel-*/**": true,
+        "**/external/**": true,
+        "**/.cache/**": true
+    }
+}

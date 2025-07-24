@@ -1,0 +1,18 @@
+module(
+    name = "bazel_demo",
+    version = "1.0.0",
+)
+
+# 使用 C++ 工具链
+bazel_dep(name = "rules_cc", version = "0.0.9")
+
+# 可选：使用 Google Test 进行单元测试
+bazel_dep(name = "googletest", version = "1.14.0")
+
+# 用于生成 compile_commands.json 的扩展
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+    commit = "204aa593e002cbd177d30f11f54cff3559110bb9",
+) 

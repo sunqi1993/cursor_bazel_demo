@@ -1,0 +1,93 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Bazel: Build All",
+            "type": "shell",
+            "command": "bazel",
+            "args": ["build", "//..."],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "构建所有目标"
+        },
+        {
+            "label": "Bazel: Run Main",
+            "type": "shell",
+            "command": "bazel",
+            "args": ["run", "//main:main"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "运行主程序"
+        },
+        {
+            "label": "Bazel: Run Tests",
+            "type": "shell",
+            "command": "bazel",
+            "args": ["test", "//..."],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "运行所有测试"
+        },
+        {
+            "label": "Refresh Compile Commands",
+            "type": "shell",
+            "command": "bazel",
+            "args": ["run", "//:refresh_compile_commands"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "刷新 compile_commands.json 用于 IDE 语义分析"
+        },
+        {
+            "label": "Bazel: Clean",
+            "type": "shell",
+            "command": "bazel",
+            "args": ["clean"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "清理构建产物"
+        }
+    ]
+} 

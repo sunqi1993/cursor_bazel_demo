@@ -1,0 +1,21 @@
+# 根目录的 BUILD 文件
+# 这里可以定义整个项目的通用规则或别名
+
+load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")
+
+# 生成 compile_commands.json 的规则
+refresh_compile_commands(
+    name = "refresh_compile_commands",
+    # 指定要包含的目标
+    targets = [
+        "//lib:hello_lib",
+        "//main:main",
+        "//test:hello_test",
+    ],
+)
+
+# 定义一个别名，方便直接运行主程序
+alias(
+    name = "run",
+    actual = "//main:main",
+) 

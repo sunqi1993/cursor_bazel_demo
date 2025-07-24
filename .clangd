@@ -1,0 +1,26 @@
+CompileFlags:
+  Add: 
+    - -std=c++17
+    - -Wall
+    - -Wextra
+  Remove: 
+    - -fcanonical-system-headers
+    - -fno-canonical-system-headers
+  CompilationDatabase: .
+
+Index:
+  Background: Build
+  StandardLibrary: true
+  
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+  ClangTidy:
+    Add: [performance-*, readability-*, modernize-*]
+    Remove: [readability-braces-around-statements]
+  
+Hover:
+  ShowAKA: true
+  
+Completion:
+  AllScopes: true

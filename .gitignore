@@ -1,0 +1,7 @@
+.specstory
+
+# Bazel
+bazel-*
+
+# compile_commands.json (生成的文件)
+compile_commands.json

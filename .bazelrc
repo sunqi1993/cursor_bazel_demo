@@ -1,0 +1,26 @@
+# 启用 Bazel modules
+common --enable_bzlmod
+
+# C++ 编译选项
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
+
+# 调试信息
+build --strip=never
+build --copt=-g
+
+# 输出详细信息
+build --verbose_failures
+build --show_timestamps
+
+# 优化设置
+build:opt --copt=-O2
+build:opt --copt=-DNDEBUG
+
+# 调试设置
+build:dbg --copt=-O0
+build:dbg --copt=-DDEBUG
+
+# compile_commands.json 相关配置
+# 为了更好的 IDE 支持
+build --compilation_mode=dbg 

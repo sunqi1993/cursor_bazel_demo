@@ -1,0 +1,28 @@
+{
+    "recommendations": [
+        // === 必需扩展 ===
+        "llvm-vs-code-extensions.vscode-clangd",  // clangd 语言服务器
+        
+        // === Bazel 支持 ===
+        "bazelbuild.vscode-bazel",                // Bazel 构建系统支持
+        
+        // === 代码质量 ===
+        "ms-vscode.cpptools-themes",             // C++ 主题
+        "streetsidesoftware.code-spell-checker", // 拼写检查
+        
+        // === 开发体验 ===
+        "ms-vscode.vscode-json",                 // JSON 语言支持
+        "redhat.vscode-yaml",                    // YAML 语言支持
+        "ms-vscode.hexeditor",                   // 十六进制编辑器
+        "ms-vscode.cmake-tools",                 // CMake 支持（可选）
+        
+        // === Git 相关 ===
+        "eamodio.gitlens",                       // Git 增强
+        "github.vscode-pull-request-github"     // GitHub PR 支持
+    ],
+    "unwantedRecommendations": [
+        // === 避免冲突的扩展 ===
+        "ms-vscode.cpptools",                    // 传统的 C/C++ 扩展（与 clangd 冲突）
+        "ms-vscode.cpptools-extension-pack"     // C/C++ 扩展包
+    ]
+}
