@@ -1,6 +1,6 @@
-# Bazel C++ Demo Project
+# Bazel C++ Demo Project Powered by Cursor
 
-这是一个使用 Bazel modules (bzlmod) 的 C++ 示例项目。
+这是一个使用 Bazel modules (bzlmod) 用cursor实现的 C++ 示例项目。
 
 ## 项目结构
 
