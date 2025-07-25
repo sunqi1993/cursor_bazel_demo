@@ -12,7 +12,7 @@
 namespace cpputil {
 namespace json {
 
-json::json(const std::string& json_str) : doc_(std::make_unique<rapidjson::Document>()) {
+JsonParam::JsonParam(const std::string& json_str) : doc_(std::make_unique<rapidjson::Document>()) {
     if (doc_->Parse(json_str.c_str()).HasParseError()) {
         std::cerr << "JSON parse error: " << rapidjson::GetParseError_En(doc_->GetParseError()) 
                   << " at offset " << doc_->GetErrorOffset() << std::endl;
@@ -20,11 +20,11 @@ json::json(const std::string& json_str) : doc_(std::make_unique<rapidjson::Docum
     }
 }
 
-bool json::has(const JsonPath& path) const {
+bool JsonParam::has(const JsonPath& path) const {
     return getValueByPath(path) != nullptr;
 }
 
-std::string json::toString() const {
+std::string JsonParam::toString() const {
     if (!isValid()) {
         return "";
     }
@@ -35,11 +35,11 @@ std::string json::toString() const {
     return buffer.GetString();
 }
 
-bool json::isValid() const {
+bool JsonParam::isValid() const {
     return doc_ != nullptr;
 }
 
-const rapidjson::Value* json::getValueByPath(const JsonPath& path) const {
+const rapidjson::Value* JsonParam::getValueByPath(const JsonPath& path) const {
     if (!isValid() || path.empty()) {
         return nullptr;
     }
@@ -69,7 +69,7 @@ const rapidjson::Value* json::getValueByPath(const JsonPath& path) const {
     return current;
 }
 
-rapidjson::Value* json::getOrCreateValueByPath(const JsonPath& path) {
+rapidjson::Value* JsonParam::getOrCreateValueByPath(const JsonPath& path) {
     if (!isValid() || path.empty()) {
         return nullptr;
     }
@@ -125,7 +125,7 @@ rapidjson::Value* json::getOrCreateValueByPath(const JsonPath& path) {
 
 // 通用的递归类型解析函数
 template<typename T>
-T json::parseValue(const rapidjson::Value* value, const T& default_value) const {
+T JsonParam::parseValue(const rapidjson::Value* value, const T& default_value) const {
     if (!value) return default_value;
     
     // 基本类型处理
@@ -162,7 +162,7 @@ T json::parseValue(const rapidjson::Value* value, const T& default_value) const 
 
 // vector 类型解析
 template<typename V>
-std::vector<V> json::parseVector(const rapidjson::Value* value, const std::vector<V>& default_value) const {
+std::vector<V> JsonParam::parseVector(const rapidjson::Value* value, const std::vector<V>& default_value) const {
     if (!value || !value->IsArray()) {
         return default_value;
     }
@@ -180,7 +180,7 @@ std::vector<V> json::parseVector(const rapidjson::Value* value, const std::vecto
 
 // map 类型解析
 template<typename MapType>
-MapType json::parseMap(const rapidjson::Value* value, const MapType& default_value) const {
+MapType JsonParam::parseMap(const rapidjson::Value* value, const MapType& default_value) const {
     if (!value || !value->IsObject()) {
         return default_value;
     }
@@ -199,7 +199,7 @@ MapType json::parseMap(const rapidjson::Value* value, const MapType& default_val
 
 // 通用的递归类型设置函数
 template<typename T>
-bool json::set(const JsonPath& path, const T& value) {
+bool JsonParam::set(const JsonPath& path, const T& value) {
     rapidjson::Value* target = getOrCreateValueByPath(path);
     if (!target) {
         return false;
@@ -208,7 +208,7 @@ bool json::set(const JsonPath& path, const T& value) {
 }
 
 template<typename T>
-bool json::setValue(rapidjson::Value* value, const T& new_value) {
+bool JsonParam::setValue(rapidjson::Value* value, const T& new_value) {
     if (!value) return false;
     
     // 基本类型处理
@@ -235,7 +235,7 @@ bool json::setValue(rapidjson::Value* value, const T& new_value) {
 
 // vector 类型设置
 template<typename V>
-bool json::setVector(rapidjson::Value* value, const std::vector<V>& new_value) {
+bool JsonParam::setVector(rapidjson::Value* value, const std::vector<V>& new_value) {
     if (!value) return false;
     
     value->SetArray();
@@ -253,7 +253,7 @@ bool json::setVector(rapidjson::Value* value, const std::vector<V>& new_value) {
 
 // map 类型设置
 template<typename MapType>
-bool json::setMap(rapidjson::Value* value, const MapType& new_value) {
+bool JsonParam::setMap(rapidjson::Value* value, const MapType& new_value) {
     if (!value) return false;
     
     value->SetObject();
@@ -271,57 +271,57 @@ bool json::setMap(rapidjson::Value* value, const MapType& new_value) {
 }
 
 // 显式实例化常用类型
-template std::string json::get(const JsonPath& path, const std::string& default_value) const;
-template int json::get(const JsonPath& path, const int& default_value) const;
-template double json::get(const JsonPath& path, const double& default_value) const;
-template bool json::get(const JsonPath& path, const bool& default_value) const;
+template std::string JsonParam::get(const JsonPath& path, const std::string& default_value) const;
+template int JsonParam::get(const JsonPath& path, const int& default_value) const;
+template double JsonParam::get(const JsonPath& path, const double& default_value) const;
+template bool JsonParam::get(const JsonPath& path, const bool& default_value) const;
 
 // 显式实例化 vector 类型
-template std::vector<std::string> json::get(const JsonPath& path, const std::vector<std::string>& default_value) const;
-template std::vector<int> json::get(const JsonPath& path, const std::vector<int>& default_value) const;
-template std::vector<double> json::get(const JsonPath& path, const std::vector<double>& default_value) const;
-template std::vector<bool> json::get(const JsonPath& path, const std::vector<bool>& default_value) const;
+template std::vector<std::string> JsonParam::get(const JsonPath& path, const std::vector<std::string>& default_value) const;
+template std::vector<int> JsonParam::get(const JsonPath& path, const std::vector<int>& default_value) const;
+template std::vector<double> JsonParam::get(const JsonPath& path, const std::vector<double>& default_value) const;
+template std::vector<bool> JsonParam::get(const JsonPath& path, const std::vector<bool>& default_value) const;
 
 // 显式实例化 map 类型
-template std::map<std::string, std::string> json::get(const JsonPath& path, const std::map<std::string, std::string>& default_value) const;
-template std::unordered_map<std::string, std::string> json::get(const JsonPath& path, const std::unordered_map<std::string, std::string>& default_value) const;
-template std::map<std::string, int> json::get(const JsonPath& path, const std::map<std::string, int>& default_value) const;
-template std::unordered_map<std::string, int> json::get(const JsonPath& path, const std::unordered_map<std::string, int>& default_value) const;
-template std::map<std::string, double> json::get(const JsonPath& path, const std::map<std::string, double>& default_value) const;
-template std::unordered_map<std::string, double> json::get(const JsonPath& path, const std::unordered_map<std::string, double>& default_value) const;
+template std::map<std::string, std::string> JsonParam::get(const JsonPath& path, const std::map<std::string, std::string>& default_value) const;
+template std::unordered_map<std::string, std::string> JsonParam::get(const JsonPath& path, const std::unordered_map<std::string, std::string>& default_value) const;
+template std::map<std::string, int> JsonParam::get(const JsonPath& path, const std::map<std::string, int>& default_value) const;
+template std::unordered_map<std::string, int> JsonParam::get(const JsonPath& path, const std::unordered_map<std::string, int>& default_value) const;
+template std::map<std::string, double> JsonParam::get(const JsonPath& path, const std::map<std::string, double>& default_value) const;
+template std::unordered_map<std::string, double> JsonParam::get(const JsonPath& path, const std::unordered_map<std::string, double>& default_value) const;
 
 // 递归 map 类型实例化
-template std::map<std::string, std::map<std::string, std::string>> json::get(const JsonPath& path, const std::map<std::string, std::map<std::string, std::string>>& default_value) const;
-template std::map<std::string, std::vector<std::string>> json::get(const JsonPath& path, const std::map<std::string, std::vector<std::string>>& default_value) const;
-template std::vector<std::map<std::string, std::string>> json::get(const JsonPath& path, const std::vector<std::map<std::string, std::string>>& default_value) const;
+template std::map<std::string, std::map<std::string, std::string>> JsonParam::get(const JsonPath& path, const std::map<std::string, std::map<std::string, std::string>>& default_value) const;
+template std::map<std::string, std::vector<std::string>> JsonParam::get(const JsonPath& path, const std::map<std::string, std::vector<std::string>>& default_value) const;
+template std::vector<std::map<std::string, std::string>> JsonParam::get(const JsonPath& path, const std::vector<std::map<std::string, std::string>>& default_value) const;
 
 // 新增测试用例需要的实例化
-template std::map<std::string, std::vector<int>> json::get(const JsonPath& path, const std::map<std::string, std::vector<int>>& default_value) const;
-template std::vector<std::map<std::string, int>> json::get(const JsonPath& path, const std::vector<std::map<std::string, int>>& default_value) const;
+template std::map<std::string, std::vector<int>> JsonParam::get(const JsonPath& path, const std::map<std::string, std::vector<int>>& default_value) const;
+template std::vector<std::map<std::string, int>> JsonParam::get(const JsonPath& path, const std::vector<std::map<std::string, int>>& default_value) const;
 
 // set 方法的显式实例化
-template bool json::set(const JsonPath& path, const std::string& value);
-template bool json::set(const JsonPath& path, const int& value);
-template bool json::set(const JsonPath& path, const double& value);
-template bool json::set(const JsonPath& path, const bool& value);
+template bool JsonParam::set(const JsonPath& path, const std::string& value);
+template bool JsonParam::set(const JsonPath& path, const int& value);
+template bool JsonParam::set(const JsonPath& path, const double& value);
+template bool JsonParam::set(const JsonPath& path, const bool& value);
 
 // set vector 类型实例化
-template bool json::set(const JsonPath& path, const std::vector<std::string>& value);
-template bool json::set(const JsonPath& path, const std::vector<int>& value);
-template bool json::set(const JsonPath& path, const std::vector<double>& value);
-template bool json::set(const JsonPath& path, const std::vector<bool>& value);
+template bool JsonParam::set(const JsonPath& path, const std::vector<std::string>& value);
+template bool JsonParam::set(const JsonPath& path, const std::vector<int>& value);
+template bool JsonParam::set(const JsonPath& path, const std::vector<double>& value);
+template bool JsonParam::set(const JsonPath& path, const std::vector<bool>& value);
 
 // set map 类型实例化
-template bool json::set(const JsonPath& path, const std::map<std::string, std::string>& value);
-template bool json::set(const JsonPath& path, const std::unordered_map<std::string, std::string>& value);
-template bool json::set(const JsonPath& path, const std::map<std::string, int>& value);
-template bool json::set(const JsonPath& path, const std::unordered_map<std::string, int>& value);
-template bool json::set(const JsonPath& path, const std::map<std::string, double>& value);
-template bool json::set(const JsonPath& path, const std::unordered_map<std::string, double>& value);
+template bool JsonParam::set(const JsonPath& path, const std::map<std::string, std::string>& value);
+template bool JsonParam::set(const JsonPath& path, const std::unordered_map<std::string, std::string>& value);
+template bool JsonParam::set(const JsonPath& path, const std::map<std::string, int>& value);
+template bool JsonParam::set(const JsonPath& path, const std::unordered_map<std::string, int>& value);
+template bool JsonParam::set(const JsonPath& path, const std::map<std::string, double>& value);
+template bool JsonParam::set(const JsonPath& path, const std::unordered_map<std::string, double>& value);
 
 // 递归 set 类型实例化
-template bool json::set(const JsonPath& path, const std::map<std::string, std::vector<int>>& value);
-template bool json::set(const JsonPath& path, const std::vector<std::map<std::string, int>>& value);
+template bool JsonParam::set(const JsonPath& path, const std::map<std::string, std::vector<int>>& value);
+template bool JsonParam::set(const JsonPath& path, const std::vector<std::map<std::string, int>>& value);
 
 } // namespace json
 } // namespace cpputil 

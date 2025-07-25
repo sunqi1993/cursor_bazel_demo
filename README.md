@@ -88,6 +88,7 @@ bazel build --config=dbg //main:main
 - 支持嵌套类型：`map<string, vector<int>>`、`vector<map<string, string>>` 等
 - 支持 `set<T>` 接口：可设置任意类型值，自动创建路径
 - 简化的 API：`json_obj.get({"node1", 1, "node2"}, default_value)`、`json_obj.set({"node1", 1, "node2"}, value)`
+- 命名空间：`cpputil::json::JsonParam`
 
 ## IDE 支持和语义分析
 

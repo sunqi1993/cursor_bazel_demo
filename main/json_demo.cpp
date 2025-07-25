@@ -21,7 +21,7 @@ int main() {
         }
     })";
     
-    json j(json_str);
+    JsonParam j(json_str);
     
     std::cout << "\n1. 初始 JSON:" << std::endl;
     std::cout << j.toString() << std::endl;

@@ -1,8 +1,8 @@
-# cpputil::json —— JSON 解析与类型安全访问库
+# cpputil::json::JsonParam —— JSON 解析与类型安全访问库
 
 ## 简介
 
-`cpputil::json` 是基于 RapidJSON 封装的 C++ JSON 解析与类型安全访问库，支持通过路径表达式和模板类型递归安全地获取和设置 JSON 数据，适用于现代 C++ 项目。
+`cpputil::json::JsonParam` 是基于 RapidJSON 封装的 C++ JSON 解析与类型安全访问库，支持通过路径表达式和模板类型递归安全地获取和设置 JSON 数据，适用于现代 C++ 项目。
 
 ## 主要特性
 - 基于 RapidJSON，性能优异
@@ -36,7 +36,7 @@ std::string json_str = R"({
     }
 })";
 
-json j(json_str);
+JsonParam j(json_str);
 
 // 基本类型
 std::string name = j.get({"user", "name"}, std::string("default"));

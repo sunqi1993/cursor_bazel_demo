@@ -42,11 +42,11 @@ protected:
             ]
         })";
         
-        json_obj_ = std::make_unique<json>(json_str_);
+        json_obj_ = std::make_unique<JsonParam>(json_str_);
     }
 
     std::string json_str_;
-    std::unique_ptr<json> json_obj_;
+    std::unique_ptr<JsonParam> json_obj_;
 };
 
 TEST_F(JsonTest, ConstructorWithValidJson) {
@@ -54,7 +54,7 @@ TEST_F(JsonTest, ConstructorWithValidJson) {
 }
 
 TEST_F(JsonTest, ConstructorWithInvalidJson) {
-    json invalid_json("invalid json string");
+    JsonParam invalid_json("invalid json string");
     EXPECT_FALSE(invalid_json.isValid());
 }
 
@@ -240,7 +240,7 @@ TEST_F(JsonTest, GetMapStringDouble) {
             "bmi": 22.8
         }
     })";
-    json double_json_obj(double_json_str);
+    JsonParam double_json_obj(double_json_str);
     
     std::map<std::string, double> result = double_json_obj.get({"measurements"}, std::map<std::string, double>{});
     

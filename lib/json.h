@@ -46,26 +46,26 @@ private:
 };
 
 // JSON 类，基于 RapidJSON 封装
-class json {
+class JsonParam {
 public:
     // 构造函数，接受 JSON 字符串
-    explicit json(const std::string& json_str);
+    explicit JsonParam(const std::string& json_str);
     
     // 默认构造函数
-    json() = default;
+    JsonParam() = default;
     
     // 移动构造函数
-    json(json&& other) noexcept = default;
+    JsonParam(JsonParam&& other) noexcept = default;
     
     // 移动赋值运算符
-    json& operator=(json&& other) noexcept = default;
+    JsonParam& operator=(JsonParam&& other) noexcept = default;
     
     // 禁用拷贝（避免性能问题）
-    json(const json&) = delete;
-    json& operator=(const json&) = delete;
+    JsonParam(const JsonParam&) = delete;
+    JsonParam& operator=(const JsonParam&) = delete;
     
     // 析构函数
-    ~json() = default;
+    ~JsonParam() = default;
     
     // 获取值的模板方法 - 支持递归类型解析
     template<typename T>
