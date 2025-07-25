@@ -7,6 +7,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
+#include <string>
 #include <type_traits>
 #include <rapidjson/document.h>
 

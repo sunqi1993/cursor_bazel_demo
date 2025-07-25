@@ -2,63 +2,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Main Program",
-            "type": "cppdbg",
+            "name": "Debug json Program",
+            "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/main/main",
+            "program": "${workspaceFolder}/bazel-bin/main/json_demo",
             "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "lldb",
-            "preLaunchTask": "Bazel: Build All",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for lldb",
-                    "text": "settings set target.prefer-dynamic-value run-target",
-                    "ignoreFailures": true
-                }
-            ],
-            "osx": {
-                "MIMode": "lldb"
+            // "breakpointMode": "file",
+            "sourceMap": {
+                // "/proc/self/cwd": "${workspaceFolder}",
+                ".": "${workspaceFolder}"
             },
-            "linux": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            }
+            "cwd": "${workspaceFolder}",
         },
-        {
-            "name": "Debug Tests",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/test/hello_test",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "lldb",
-            "preLaunchTask": "Bazel: Run Tests",
-            "osx": {
-                "MIMode": "lldb"
-            },
-            "linux": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            }
-        }
     ]
 } 

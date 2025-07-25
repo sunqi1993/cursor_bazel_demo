@@ -13,6 +13,7 @@ build --copt=-g
 build --verbose_failures
 build --show_timestamps
 
+
 # 优化设置
 build:opt --copt=-O2
 build:opt --copt=-DNDEBUG
@@ -20,6 +21,9 @@ build:opt --copt=-DNDEBUG
 # 调试设置
 build:dbg --copt=-O0
 build:dbg --copt=-DDEBUG
+build:dbg --features=oso_prefix_is_pwd
+# 使用相对路径信息
+build:dbg --copt=-fdebug-prefix-map=$(pwd)=.
 
 # compile_commands.json 相关配置
 # 为了更好的 IDE 支持

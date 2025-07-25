@@ -17,7 +17,7 @@ Diagnostics:
   MissingIncludes: Strict
   ClangTidy:
     Add: [performance-*, readability-*, modernize-*]
-    Remove: [readability-braces-around-statements, modernize-use-trailing-return-type]
+    Remove: [readability-braces-around-statements, modernize-use-trailing-return-type, performance-avoid-endl]
   
 Hover:
   ShowAKA: true
