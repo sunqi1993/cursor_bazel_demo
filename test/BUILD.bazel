@@ -5,4 +5,13 @@ cc_test(
         "//lib:hello_lib",
         "@googletest//:gtest_main",
     ],
+)
+
+cc_test(
+    name = "json_test",
+    srcs = ["json_test.cpp"],
+    deps = [
+        "//lib:json_lib",
+        "@googletest//:gtest_main",
+    ],
 ) 

@@ -12,12 +12,15 @@ bazel_demo/
 ├── lib/               # 库代码
 │   ├── hello.h        # 头文件
 │   ├── hello.cpp      # 实现文件
+│   ├── json.h         # JSON 库头文件
+│   ├── json.cpp       # JSON 库实现文件
 │   └── BUILD.bazel    # 库构建文件
 ├── main/              # 主程序
 │   ├── main.cpp       # 主程序入口
 │   └── BUILD.bazel    # 主程序构建文件
 ├── test/              # 单元测试
 │   ├── hello_test.cpp # 测试文件
+│   ├── json_test.cpp  # JSON 库测试文件
 │   └── BUILD.bazel    # 测试构建文件
 └── README.md          # 项目说明
 ```
@@ -59,6 +62,7 @@ bazel test //...
 
 # 运行特定测试
 bazel test //test:hello_test
+bazel test //test:json_test
 ```
 
 ### 构建配置
@@ -79,6 +83,11 @@ bazel build --config=dbg //main:main
 - 使用 Google Test 进行单元测试
 - 配置了常用的构建选项
 - 支持生成 `compile_commands.json` 用于 IDE 语义分析
+- 基于 RapidJSON 的 JSON 库封装，支持路径访问和类型安全
+- 支持递归类型解析：`int`、`double`、`string`、`vector<V>`、`map<K,V>`
+- 支持嵌套类型：`map<string, vector<int>>`、`vector<map<string, string>>` 等
+- 支持 `set<T>` 接口：可设置任意类型值，自动创建路径
+- 简化的 API：`json_obj.get({"node1", 1, "node2"}, default_value)`、`json_obj.set({"node1", 1, "node2"}, value)`
 
 ## IDE 支持和语义分析
 

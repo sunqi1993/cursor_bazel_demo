@@ -9,6 +9,7 @@ refresh_compile_commands(
     # 指定要包含的目标
     targets = [
         "//lib:hello_lib",
+        "//lib:json_lib",
         "//main:main",
         "//test:hello_test",
     ],

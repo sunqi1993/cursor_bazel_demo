@@ -2,4 +2,12 @@ cc_binary(
     name = "main",
     srcs = ["main.cpp"],
     deps = ["//lib:hello_lib"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "json_demo",
+    srcs = ["json_demo.cpp"],
+    deps = ["//lib:json_lib"],
+    visibility = ["//visibility:public"],
 )

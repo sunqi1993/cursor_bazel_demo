@@ -4,3 +4,11 @@ cc_library(
     hdrs = ["hello.h"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "json_lib",
+    srcs = ["json.cpp"],
+    hdrs = ["json.h"],
+    deps = ["@rapidjson//:rapidjson"],
+    visibility = ["//visibility:public"],
+)

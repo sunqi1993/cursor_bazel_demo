@@ -15,4 +15,7 @@ git_override(
     module_name = "hedron_compile_commands",
     remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
     commit = "204aa593e002cbd177d30f11f54cff3559110bb9",
-) 
+)
+
+# RapidJSON 依赖
+bazel_dep(name = "rapidjson", version = "1.1.0") 
