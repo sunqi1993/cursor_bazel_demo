@@ -12,6 +12,7 @@
                 // "/proc/self/cwd": "${workspaceFolder}",
                 ".": "${workspaceFolder}"
             },
+            
             "cwd": "${workspaceFolder}",
             "preRunCommands": [
                 "settings set target.max-string-summary-length 1000"
