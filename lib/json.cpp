@@ -21,6 +21,29 @@ JsonParam::JsonParam(const std::string& json_str) : doc_(std::make_unique<rapidj
     }
 }
 
+// 拷贝构造函数
+JsonParam::JsonParam(const JsonParam& other) {
+    if (other.isValid()) {
+        doc_ = std::make_unique<rapidjson::Document>();
+        doc_->CopyFrom(*other.doc_, doc_->GetAllocator());
+    }
+}
+
+// 拷贝赋值运算符
+JsonParam& JsonParam::operator=(const JsonParam& other) {
+    if (this != &other) {
+        if (other.isValid()) {
+            if (!doc_) {
+                doc_ = std::make_unique<rapidjson::Document>();
+            }
+            doc_->CopyFrom(*other.doc_, doc_->GetAllocator());
+        } else {
+            doc_.reset();
+        }
+    }
+    return *this;
+}
+
 bool JsonParam::has(const JsonPath& path) const {
     return getValueByPath(path) != nullptr;
 }
@@ -38,6 +61,99 @@ std::string JsonParam::toString() const {
 
 bool JsonParam::isValid() const {
     return doc_ != nullptr;
+}
+
+// 更新当前 JSON 对象
+bool JsonParam::update(const JsonParam& other) {
+    if (!other.isValid()) {
+        return false;
+    }
+    
+    // 如果当前对象无效，直接复制
+    if (!isValid()) {
+        *this = other;
+        return true;
+    }
+    
+    // 深度合并两个 JSON 对象
+    deepMerge(*doc_, *other.doc_, doc_->GetAllocator());
+    return true;
+}
+
+// 深度合并两个 JSON 值
+void JsonParam::deepMerge(rapidjson::Value& target, const rapidjson::Value& source, rapidjson::Document::AllocatorType& allocator) {
+    if (source.IsObject() && target.IsObject()) {
+        // 合并对象
+        for (auto it = source.MemberBegin(); it != source.MemberEnd(); ++it) {
+            const char* key = it->name.GetString();
+            
+            if (target.HasMember(key)) {
+                // 如果目标也有这个键，递归合并
+                deepMerge(target[key], it->value, allocator);
+            } else {
+                // 如果目标没有这个键，添加新成员
+                rapidjson::Value key_copy(key, allocator);
+                rapidjson::Value value_copy = deepCopy(it->value, allocator);
+                target.AddMember(key_copy, value_copy, allocator);
+            }
+        }
+    } else if (source.IsArray() && target.IsArray()) {
+        // 对于数组，将源数组的元素追加到目标数组
+        for (rapidjson::SizeType i = 0; i < source.Size(); ++i) {
+            rapidjson::Value element_copy = deepCopy(source[i], allocator);
+            target.PushBack(element_copy, allocator);
+        }
+    } else {
+        // 对于其他类型，直接覆盖
+        target.CopyFrom(source, allocator);
+    }
+}
+
+// 深度复制 JSON 值
+rapidjson::Value JsonParam::deepCopy(const rapidjson::Value& source, rapidjson::Document::AllocatorType& allocator) {
+    rapidjson::Value result;
+    result.CopyFrom(source, allocator);
+    return result;
+}
+
+// 克隆当前 JSON 对象
+JsonParamPtr JsonParam::clone() const {
+    if (!isValid()) {
+        return std::make_shared<JsonParam>();
+    }
+    
+    // 创建新的 JsonParam 对象
+    auto result = std::make_shared<JsonParam>();
+    result->doc_ = std::make_unique<rapidjson::Document>();
+    result->doc_->CopyFrom(*doc_, result->doc_->GetAllocator());
+    
+    return result;
+}
+
+// 克隆指定路径的 JSON 子树
+JsonParamPtr JsonParam::clone(const JsonPath& path) const {
+    if (!isValid()) {
+        return std::make_shared<JsonParam>();
+    }
+    
+    // 获取指定路径的值
+    const rapidjson::Value* value = getValueByPath(path);
+    if (!value||!value->IsObject()) {
+        return std::make_shared<JsonParam>();
+    }
+    
+    // 创建新的 JsonParam 对象，并复制指定路径的值
+    auto result = std::make_shared<JsonParam>();
+    result->doc_ = std::make_unique<rapidjson::Document>();
+    result->doc_->CopyFrom(*value, result->doc_->GetAllocator());
+    
+    return result;
+}
+
+// 简化接口：直接接受列表初始化的路径
+JsonParamPtr JsonParam::clone(std::initializer_list<JsonPath::PathElement> path_elements) const {
+    JsonPath path(path_elements);
+    return clone(path);
 }
 
 const rapidjson::Value* JsonParam::getValueByPath(const JsonPath& path) const {

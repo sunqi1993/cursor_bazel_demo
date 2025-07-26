@@ -14,6 +14,10 @@
 namespace cpputil {
 namespace json {
 
+// 前向声明和类型定义
+class JsonParam;
+using JsonParamPtr = std::shared_ptr<JsonParam>;
+
 // JSON 路径类，支持列表初始化
 class JsonPath {
 public:
@@ -61,9 +65,9 @@ public:
     // 移动赋值运算符
     JsonParam& operator=(JsonParam&& other) noexcept = default;
     
-    // 禁用拷贝（避免性能问题）
-    JsonParam(const JsonParam&) = delete;
-    JsonParam& operator=(const JsonParam&) = delete;
+    // 拷贝构造函数和赋值运算符（用于update方法）
+    JsonParam(const JsonParam& other);
+    JsonParam& operator=(const JsonParam& other);
     
     // 析构函数
     ~JsonParam() = default;
@@ -104,6 +108,19 @@ public:
     
     // 检查 JSON 是否有效
     bool isValid() const;
+
+    // 更新当前 JSON 对象，将另一个 JsonParam 的内容合并到当前对象中
+    // 对于相同的键，other 的值会覆盖当前值
+    bool update(const JsonParam& other);
+
+    // 克隆当前 JSON 对象
+    JsonParamPtr clone() const;
+
+    // 克隆指定路径的 JSON 子树
+    JsonParamPtr clone(const JsonPath& path) const;
+    
+    // 简化接口：直接接受列表初始化的路径
+    JsonParamPtr clone(std::initializer_list<JsonPath::PathElement> path_elements) const;
 
 private:
     // 类型特征检测
@@ -154,6 +171,10 @@ private:
     // 从 RapidJSON 值转换为目标类型
     template<typename T>
     T convertValue(const rapidjson::Value* value, const T& default_value) const;
+    
+    // update 方法的辅助函数
+    void deepMerge(rapidjson::Value& target, const rapidjson::Value& source, rapidjson::Document::AllocatorType& allocator);
+    rapidjson::Value deepCopy(const rapidjson::Value& source, rapidjson::Document::AllocatorType& allocator);
 };
 
 // 移除 make_path 函数，使用简化的 get 接口
